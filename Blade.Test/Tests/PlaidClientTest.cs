@@ -1,6 +1,5 @@
 ﻿#pragma warning disable IDE0060 // Remove unused parameter
 
-using Acklann.Plaid.MSTest;
 using Blade;
 using Blade.Authentication;
 using Blade.Balance;
@@ -14,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shouldly;
 using System.Threading.Tasks;
 
-namespace Blade.MSTest.Tests
+namespace Blade.Test
 {
     [TestClass]
     public class PlaidClientTest

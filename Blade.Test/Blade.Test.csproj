@@ -23,11 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Configuration.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Configuration.tt</DependentUpon>
-    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -43,10 +38,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Configuration.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Configuration.cs</LastGenOutput>
-    </None>
     <None Update="secrets.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
