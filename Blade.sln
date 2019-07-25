@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29021.104
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blade", "Blade\Blade.csproj", "{910A426B-A6CB-4618-B175-B42176753A67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blade.Test", "Blade.Test\Blade.Test.csproj", "{58FFF843-87FF-46F9-9DAC-C1B434C0F262}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{910A426B-A6CB-4618-B175-B42176753A67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{910A426B-A6CB-4618-B175-B42176753A67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{910A426B-A6CB-4618-B175-B42176753A67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{910A426B-A6CB-4618-B175-B42176753A67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58FFF843-87FF-46F9-9DAC-C1B434C0F262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58FFF843-87FF-46F9-9DAC-C1B434C0F262}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58FFF843-87FF-46F9-9DAC-C1B434C0F262}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58FFF843-87FF-46F9-9DAC-C1B434C0F262}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D7A85E2F-CEEC-4382-A833-6411EDD08220}
+	EndGlobalSection
+EndGlobal

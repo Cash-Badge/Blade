@@ -1,0 +1,15 @@
+﻿namespace Blade.Management
+{
+    /// <summary>
+    /// Represents a response from plaid's '/processor/stripe/bank_account_token/create' endpoint. Exchange a Link access_token for an Stripe API stripe_bank_account_token.
+    /// </summary>
+    /// <seealso cref="Response" />
+    public class StripeTokenResponse : Response
+    {
+        /// <summary>
+        /// Gets or sets the access token.
+        /// </summary>
+        /// <value>The access token.</value>
+        public string StripeBankAccountToken { get; set; }
+    }
+}
