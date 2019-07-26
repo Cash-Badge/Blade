@@ -1,4 +1,6 @@
-﻿namespace Blade.Entity
+﻿using System.Text.Json.Serialization;
+
+namespace Blade.Entity
 {
     /// <summary>
     /// Represents an account holder information.
@@ -29,24 +31,22 @@
         /// <value>The phone numbers.</value>
         public Phone[] PhoneNumbers { get; set; }
 
-        #region Structs
-
         /// <summary>
         /// Represents a <see cref="Identity"/> phone number.
         /// </summary>
-        public struct Phone
+        public class Phone
         {
             /// <summary>
             /// Gets or sets a value indicating whether this instance is the primary phone number.
             /// </summary>
             /// <value><c>true</c> if this instance is primary; otherwise, <c>false</c>.</value>
-            public bool IsPrimary { get; set; }
+            public bool Primary { get; set; }
 
             /// <summary>
             /// Gets or sets the number.
             /// </summary>
             /// <value>The number.</value>
-            public string Number { get; set; }
+            public string Data { get; set; }
 
             /// <summary>
             /// Gets or sets the type.
@@ -58,19 +58,19 @@
         /// <summary>
         /// Represents and <see cref="Identity"/> email.
         /// </summary>
-        public struct Email
+        public class Email
         {
             /// <summary>
             /// Gets or sets the address.
             /// </summary>
             /// <value>The address.</value>
-            public string Address { get; set; }
+            public string Data { get; set; }
 
             /// <summary>
             /// Gets or sets a value indicating whether this instance is the primary email.
             /// </summary>
             /// <value><c>true</c> if this instance is primary; otherwise, <c>false</c>.</value>
-            public bool IsPrimary { get; set; }
+            public bool Primary { get; set; }
 
             /// <summary>
             /// Gets or sets the type.
@@ -82,57 +82,49 @@
         /// <summary>
         /// Represents an <see cref="Identity"/> address.
         /// </summary>
-        public struct Address
+        public class Address
         {
             /// <summary>
             /// Gets or sets a value indicating whether this instance is the primary address.
             /// </summary>
             /// <value><c>true</c> if this instance is primary; otherwise, <c>false</c>.</value>
-            public bool IsPrimary { get; set; }
-
-            /// <summary>
-            /// Gets or sets the account names.
-            /// </summary>
-            /// <value>The accounts.</value>
-            public string[] Accounts { get; set; }
+            public bool Primary { get; set; }
 
             /// <summary>
             /// Gets or sets the address data (city, state, etc).
             /// </summary>
-            /// <value>The information.</value>
-            public Data Info { get; set; }
+            /// <value>The address data.</value>
+            public AddressData Data { get; set; }
 
             /// <summary>
             /// Represents the fields of an address.
             /// </summary>
-            public struct Data
+            public class AddressData
             {
                 /// <summary>
-                /// Gets or sets the street.
+                /// Gets or sets the full street address.
                 /// </summary>
-                /// <value>The street.</value>
+                /// <value>The full street address.</value>
                 public string Street { get; set; }
 
                 /// <summary>
-                /// Gets or sets the city.
+                /// Gets or sets the full city name.
                 /// </summary>
                 /// <value>The city.</value>
                 public string City { get; set; }
 
                 /// <summary>
-                /// Gets or sets the state.
+                /// Gets or sets the state or region.
                 /// </summary>
-                /// <value>The state.</value>
-                public string State { get; set; }
+                /// <value>The state or region.</value>
+                public string Region { get; set; }
 
                 /// <summary>
-                /// Gets or sets the zip.
+                /// Gets or sets the postal code.
                 /// </summary>
-                /// <value>The zip.</value>
-                public string Zip { get; set; }
+                /// <value>The postal code.</value>
+                public string PostalCode { get; set; }
             }
         }
-
-        #endregion Structs
     }
 }

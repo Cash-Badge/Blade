@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Blade.Entity
 {
@@ -20,13 +21,6 @@ namespace Blade.Entity
         /// <value>The item identifier.</value>
         [JsonPropertyName("item_id")]
         public string Item { get; set; }
-
-        /// <summary>
-        /// Gets or sets the financial <see cref="Entity.Institution"/> identifier associated with the account.
-        /// </summary>
-        /// <value>The institution identifier.</value>
-        [JsonPropertyName("institution_id")]
-        public string Institution { get; set; }
 
         /// <summary>
         /// Gets or sets the name.
@@ -52,6 +46,9 @@ namespace Blade.Entity
         /// <value>The type.</value>
         public string Type { get; set; }
 
+        [JsonIgnore]
+        public AccountType StrongType => Enum.Parse<AccountType>(Type, true);
+
         /// <summary>
         /// Gets or sets the type of the sub.
         /// </summary>
@@ -65,5 +62,80 @@ namespace Blade.Entity
         /// <value>The balance.</value>
         [JsonPropertyName("balances")]
         public Balance Balance { get; set; }
+
+        /// <summary>
+        /// The current verification status of an Auth Item initiated through Automated or Manual microdeposits.
+        /// </summary>
+        public string VerificationStatus { get; set; }
+
+        /// <summary>
+        /// The identities of the owners of this account.
+        /// </summary>
+        public Identity[] Owners { get; set; }
+
+        [JsonIgnore]
+        public AccountVerificationStatus StrongVerificationStatus => VerificationStatus.ReverseGenerateEnumValue(AccountVerificationStatus.None);
+
+        /// <summary>
+        /// <see cref="VerificationStatus"/> possible states.
+        /// </summary>
+        public enum AccountVerificationStatus
+        {
+            /// <summary>
+            /// No information on account verification is present
+            /// </summary>
+            None,
+
+            /// <summary>
+            /// An Item is pending automated microdeposit verfication
+            /// </summary>
+            PendingAutomaticVerification,
+            
+            /// <summary>
+            /// An Item was successfully automatically verified
+            /// </summary>
+            AutomaticallyVerified,
+            
+            /// <summary>
+            /// An Item is pending manual microdeposit verfication
+            /// </summary>
+            PendingManualVerification,
+            
+            /// <summary>
+            /// An Item was successfully manually verified
+            /// </summary>
+            ManuallyVerified
+        }
+
+        /// <summary>
+        /// Enum AccountType
+        /// </summary>
+        public enum AccountType
+        {
+            /// <summary>
+            /// Brokerage account.
+            /// </summary>
+            Investment,
+
+            /// <summary>
+            /// Credit card.
+            /// </summary>
+            Credit,
+
+            /// <summary>
+            /// Checking or Savings accounts.
+            /// </summary>
+            Depository,
+
+            /// <summary>
+            /// Loan account.
+            /// </summary>
+            Loan,
+
+            /// <summary>
+            /// Non-specified account type
+            /// </summary>
+            Other
+        }
     }
 }

@@ -18,11 +18,5 @@
         /// </summary>
         /// <value>The accounts.</value>
         public Entity.Account[] Accounts { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user information.
-        /// </summary>
-        /// <value>The identity.</value>
-        public Entity.Identity Identity { get; set; }
     }
 }
