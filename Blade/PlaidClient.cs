@@ -214,13 +214,13 @@ namespace Blade
 
             string endpoint = GetEndpoint(path);
             
-            using Utf8JsonContent requestContent = GetJsonContent(JsonSerializer.ToUtf8Bytes(request, GetSerializerOptionsForRequest()));
+            using Utf8JsonContent requestContent = GetJsonContent(JsonSerializer.SerializeToUtf8Bytes(request, GetSerializerOptionsForRequest()));
             using HttpResponseMessage response = await Client.PostAsync(endpoint, requestContent);
             using Stream contentStream = await response.Content.ReadAsStreamAsync();
 
             Memory<byte> content = new Memory<byte>(new byte[contentStream.Length]);
             await contentStream.ReadAsync(content);
-            TResponse result = JsonSerializer.Parse<TResponse>(content.Span, GetSerializerOptionsForRequest());
+            TResponse result = JsonSerializer.Deserialize<TResponse>(content.Span, GetSerializerOptionsForRequest());
             result.Status = response.StatusCode;
 
             if (!response.IsSuccessStatusCode)

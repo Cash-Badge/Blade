@@ -1,6 +1,4 @@
-﻿
-
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Blade.Entity
 {
@@ -56,7 +54,7 @@ namespace Blade.Entity
         /// <summary>
         /// Represents an income stream.
         /// </summary>
-        public struct Stream
+        public class Stream
         {
             /// <summary>
             /// Gets or sets the name.

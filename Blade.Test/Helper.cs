@@ -31,19 +31,16 @@ namespace Blade.Test
 
         static string CommonEndpointRequestDataFilePath { get; } = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "secrets.json");
 
-        public static void Initialize() => CommonEndpointRequestData.Instance ??= JsonSerializer.Parse<CommonEndpointRequestData>(File.ReadAllText(CommonEndpointRequestDataFilePath), PlaidClient.PlaidNullValuePropagatingJsonSerializerOptions);
-
-        //public static async Task InitializeAsync()
-        //{
-        //    using Stream fileStream = new FileStream(CommonEndpointRequestDataFilePath, FileMode.Truncate, FileAccess.ReadWrite, FileShare.Read, 250, FileOptions.Asynchronous);
-        //    // TODO: Complete implementation using FileStream.
-        //    CommonEndpointRequestData.Instance ??= JsonSerializer.Parse<CommonEndpointRequestData>(File.ReadAllText(CommonEndpointRequestDataFilePath), PlaidClient.PlaidNullValuePropagatingJsonSerializerOptions);
-        //}
+        public static async Task InitializeAsync()
+        {
+            using Stream fileStream = new FileStream(CommonEndpointRequestDataFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 300, FileOptions.Asynchronous);
+            CommonEndpointRequestData.Instance ??= await JsonSerializer.DeserializeAsync<CommonEndpointRequestData>(fileStream, PlaidClient.PlaidNullValuePropagatingJsonSerializerOptions);
+        }
 
         public static async Task PersistCommonEndpointRequestDataAsync()
         {
-            using Stream fileStream = new FileStream(CommonEndpointRequestDataFilePath, FileMode.Truncate, FileAccess.ReadWrite, FileShare.Read, 250, FileOptions.Asynchronous);
-            await JsonSerializer.WriteAsync(CommonEndpointRequestData.Instance, fileStream, PlaidClient.PlaidNullValuePropagatingJsonSerializerOptions);
+            using Stream fileStream = new FileStream(CommonEndpointRequestDataFilePath, FileMode.Truncate, FileAccess.ReadWrite, FileShare.Read, 300, FileOptions.Asynchronous);
+            await JsonSerializer.SerializeAsync(fileStream, CommonEndpointRequestData.Instance, PlaidClient.PlaidNullValuePropagatingJsonSerializerOptions);
         }
 
         public static TRequest UseDefaults<TRequest>(this TRequest request)
@@ -74,7 +71,5 @@ namespace Blade.Test
                 }
             }
         }
-
-        public static string ConvertToJson(this object obj) => JsonSerializer.ToString(obj, new JsonSerializerOptions { WriteIndented = true });
     }
 }

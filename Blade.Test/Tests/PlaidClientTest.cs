@@ -18,10 +18,10 @@ namespace Blade.Test
     [TestClass]
     public class PlaidClientTest
     {
-        [ClassInitialize]
+        [AssemblyInitialize]
         public static async Task InitializeAsync(TestContext context)
         {
-            Helper.Initialize();
+            await Helper.InitializeAsync();
 
             if (Helper.CommonEndpointRequestData.Instance.AccessToken is null || Helper.CommonEndpointRequestData.Instance.PublicToken is null)
             {
@@ -47,7 +47,7 @@ namespace Blade.Test
             result.SuccessfulOutcome.ShouldBeTrue();
             result.Request.ShouldNotBeNullOrEmpty();
             result.Item.Identifier.ShouldNotBeNullOrEmpty();
-            result.Item.InstitutionId.ShouldNotBeNullOrEmpty();
+            result.Item.Institution.ShouldNotBeNullOrEmpty();
             result.Item.BilledProducts.Length.ShouldBeGreaterThan(0);
             result.Item.AvailableProducts.Length.ShouldBeGreaterThan(0);
         }
@@ -179,13 +179,13 @@ namespace Blade.Test
             // Act
             GetUserIdentityResponse result = await client.FetchUserIdentityAsync(request);
             if (result.Exception?.ErrorCode == "INVALID_PRODUCT")
-                Assert.Inconclusive(Test.Properties.Resources.AuthorizationDenialMessage);
+                Assert.Inconclusive(Properties.Resources.AuthorizationDenialMessage);
 
             // Assert
             result.SuccessfulOutcome.ShouldBeTrue();
             result.Request.ShouldNotBeNullOrEmpty();
             result.Accounts.Length.ShouldBeGreaterThan(0);
-            result.Identity.Names.Length.ShouldBeGreaterThan(0);
+            result.Accounts[0].Owners.Length.ShouldBeGreaterThan(0);
             result.Item.ShouldNotBeNull();
         }
 
@@ -199,14 +199,14 @@ namespace Blade.Test
             // Act
             GetIncomeResponse result = await client.FetchUserIncomeAsync(request);
             if (result.Exception?.ErrorCode == "INVALID_PRODUCT")
-                Assert.Inconclusive(Test.Properties.Resources.AuthorizationDenialMessage);
+                Assert.Inconclusive(Properties.Resources.AuthorizationDenialMessage);
 
             // Assert
             result.SuccessfulOutcome.ShouldBeTrue();
             result.Request.ShouldNotBeNullOrEmpty();
             result.Income.Streams.Length.ShouldBeGreaterThan(0);
             result.Income.LastYearIncome.ShouldBeGreaterThan(0);
-            result.Item.ShouldNotBeNull();
+            result.Item.ShouldBeNull();
         }
     }
 }
