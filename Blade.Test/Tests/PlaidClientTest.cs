@@ -23,12 +23,12 @@ namespace Blade.Test
         {
             await Helper.InitializeAsync();
 
-            if (Helper.CommonEndpointRequestData.Instance.AccessToken is null || Helper.CommonEndpointRequestData.Instance.PublicToken is null)
+            if (PlaidClient.DefaultRequestFallbackData.AccessToken is null || PlaidClient.DefaultRequestFallbackData.PublicToken is null)
             {
-                using PlaidClient client = new PlaidClient(Environment.Sandbox);
-                CreateSandboxedPublicTokenResponse response = await client.CreateSandboxedPublicToken(new CreateSandboxedPublicTokenRequest { Institution = "ins_14", InitialProducts = new[] { "assets", "auth", /*"balance",*/ "transactions", "income", "identity" } }.UseDefaults());
-                Helper.CommonEndpointRequestData.Instance.PublicToken = response.PublicToken;
-                Helper.CommonEndpointRequestData.Instance.AccessToken = (await client.ExchangeTokenAsync(new ExchangeTokenRequest { }.UseDefaults())).AccessToken;
+                using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
+                CreateSandboxedPublicTokenResponse response = await client.CreateSandboxedPublicToken(new CreateSandboxedPublicTokenRequest { Institution = "ins_14", InitialProducts = new[] { "assets", "auth", /*"balance",*/ "transactions", "income", "identity" } });
+                PlaidClient.DefaultRequestFallbackData.PublicToken = response.PublicToken;
+                PlaidClient.DefaultRequestFallbackData.AccessToken = (await client.ExchangeTokenAsync(new ExchangeTokenRequest { })).AccessToken;
                 await Helper.PersistCommonEndpointRequestDataAsync();
             }
         }
@@ -37,8 +37,8 @@ namespace Blade.Test
         public async Task GetItemAsync_should_retrieve_the_item_associated_with_the_specified_access_token()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox);
-            GetItemRequest request = new GetItemRequest { }.UseDefaults();
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
+            GetItemRequest request = new GetItemRequest { };
 
             // Act
             GetItemResponse result = await client.FetchItemAsync(request);
@@ -56,10 +56,10 @@ namespace Blade.Test
         public async Task ExchangePublicTokenAsync_should_retrieve_a_response_from_the_api_server()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox) { };
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
 
             // Act
-            ExchangeTokenRequest request = new ExchangeTokenRequest { }.UseDefaults();
+            ExchangeTokenRequest request = new ExchangeTokenRequest { };
             ExchangeTokenResponse result = await client.ExchangeTokenAsync(request);
 
             // Assert
@@ -71,8 +71,8 @@ namespace Blade.Test
         public async Task FetchCategoriesAsync_should_retrieve_the_api_category_list()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox);
-            GetCategoriesRequest request = new GetCategoriesRequest { }.UseDefaults();
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
+            GetCategoriesRequest request = new GetCategoriesRequest { };
 
             // Act
             GetCategoriesResponse result = await client.FetchCategoriesAsync(request);
@@ -87,10 +87,10 @@ namespace Blade.Test
         public async Task FetchInstitutionsAsync_should_retrieve_a_list_of_banks_that_matches_a_specified_query()
         {
             // Arrange
-            using PlaidClient sut = new PlaidClient(Environment.Sandbox);
+            using PlaidClient sut = new PlaidClient { Environment = Environment.Sandbox };
 
             // Act
-            SearchRequest request = new SearchRequest { Query = "tartan" }.UseDefaults();
+            SearchRequest request = new SearchRequest { Query = "tartan" };
 
             SearchResponse result = await sut.FetchInstitutionsAsync(request);
 
@@ -105,26 +105,26 @@ namespace Blade.Test
         public async Task FetchInstitutionByIdAsync_should_retrieve_a_bank_that_matches_a_specified_id()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox);
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
 
             // Act
-            SearchByIdRequest request = new SearchByIdRequest { InstitutionId = "ins_109511" }.UseDefaults();
+            SearchByIdRequest request = new SearchByIdRequest { Institution = "ins_109511" };
             SearchByIdResponse response = await client.FetchInstitutionByIdAsync(request);
 
             // Assert
             response.SuccessfulOutcome.ShouldBeTrue();
             response.Request.ShouldNotBeNullOrEmpty();
-            response.Institution.Identifier.ShouldBe(request.InstitutionId);
+            response.Institution.Identifier.ShouldBe(request.Institution);
         }
 
         [TestMethod]
         public async Task FetchTransactionsAsync_should_retrieve_a_list_of_transactions()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox);
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
 
             // Act
-            GetTransactionsRequest request = new GetTransactionsRequest { }.UseDefaults();
+            GetTransactionsRequest request = new GetTransactionsRequest { };
             GetTransactionsResponse result = await client.FetchTransactionsAsync(request);
 
             // Assert
@@ -139,10 +139,10 @@ namespace Blade.Test
         public async Task FetchAccountBalanceAsync_should_retrieve_the_account_balances_of_an_user()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox);
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
 
             // Act
-            GetBalanceRequest request = new GetBalanceRequest().UseDefaults();
+            GetBalanceRequest request = new GetBalanceRequest { };
             GetBalanceResponse result = await client.FetchAccountBalanceAsync(request);
 
             // Assert
@@ -155,8 +155,8 @@ namespace Blade.Test
         public async Task FetchAccountInfoAsync_should_retrieve_the_routing_numbers_of_an_user_accounts()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox);
-            GetAccountInfoRequest request = new GetAccountInfoRequest { }.UseDefaults();
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
+            GetAccountInfoRequest request = new GetAccountInfoRequest { };
 
             // Act
             GetAccountInfoResponse result = await client.FetchAccountInfoAsync(request);
@@ -173,8 +173,8 @@ namespace Blade.Test
         public async Task FetchUserIdentityAsync_should_retrieve_the_personal_info_of_an_userAsync()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox);
-            GetUserIdentityRequest request = new GetUserIdentityRequest { }.UseDefaults();
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
+            GetUserIdentityRequest request = new GetUserIdentityRequest { };
 
             // Act
             GetUserIdentityResponse result = await client.FetchUserIdentityAsync(request);
@@ -193,8 +193,8 @@ namespace Blade.Test
         public async Task FetchIncomeAsync_should_retrieve_the_monthly_earnings_of_an_userAsync()
         {
             // Arrange
-            using PlaidClient client = new PlaidClient(Environment.Sandbox);
-            GetIncomeRequest request = new GetIncomeRequest { }.UseDefaults();
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
+            GetIncomeRequest request = new GetIncomeRequest { };
 
             // Act
             GetIncomeResponse result = await client.FetchUserIncomeAsync(request);

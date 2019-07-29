@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -77,17 +78,15 @@ namespace Blade
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaidClient"/> class.
         /// </summary>
-        /// <param name="environment">The environment.</param>
-        public PlaidClient(Environment environment = Environment.Production) => Environment = environment;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlaidClient"/> class.
-        /// </summary>
-        /// <param name="clientId">The client identifier.</param>
-        /// <param name="secret">The secret.</param>
-        /// <param name="accessToken">The access token.</param>
-        /// <param name="environment">The environment.</param>
-        public PlaidClient(string clientId, string secret, string accessToken, Environment environment = Environment.Production) : this(environment) => (Secret, Identifier, AccessToken) = (secret, clientId, accessToken);
+        /// <param name="useNewClient">A boolean value for whether or not the default <see cref="HttpClient"/> instance should be recycled for this <see cref="PlaidClient"/> instance or if a new one should be created.</param>
+        public PlaidClient(bool useNewClient = false)
+        {
+            // TODO: Make useNewClient set-only property that sets the value of Client to a new HttpClient instance.
+            if (useNewClient)
+            {
+                Client = new HttpClient { };
+            }
+        }
 
         /// <summary>
         /// Retrieves information about the status of an <see cref="Entity.Item"/>. Endpoint '/item/get'.
@@ -210,10 +209,14 @@ namespace Blade
 
         internal async Task<TResponse> PostAsync<TRequest, TResponse>(string path, TRequest request) where TResponse : Response
         {
-            CertifyCredentials(request);
+            SetFallbackValues(RequestFallbackData);
+            if (!IgnoreDefaultFallbackData)
+            {
+                SetFallbackValues(DefaultRequestFallbackData);
+            }
 
             string endpoint = GetEndpoint(path);
-            
+
             using Utf8JsonContent requestContent = GetJsonContent(JsonSerializer.SerializeToUtf8Bytes(request, GetSerializerOptionsForRequest()));
             using HttpResponseMessage response = await Client.PostAsync(endpoint, requestContent);
             using Stream contentStream = await response.Content.ReadAsStreamAsync();
@@ -246,38 +249,106 @@ namespace Blade
                 SearchRequest { } => PlaidNullValuePropagatingJsonSerializerOptions,
                 _ => PlaidJsonSerializerOptions
             };
-        }
 
-        public bool ThrowOnFailure { get; set; } = true;
-
-        Environment Environment { get; }
-
-        HttpClient Client { get; } = new HttpClient { };
-
-        string Identifier { get; }
-
-        string Secret { get; }
-
-        string AccessToken { get; }
-
-        static Utf8JsonContent GetJsonContent(byte[] json) => new Utf8JsonContent(json);
-
-        void CertifyCredentials(object data)
-        {
-            if (data is Request request)
+            TRequest SetFallbackValues(CommonEndpointRequestData targetFallbackData)
             {
-                if (String.IsNullOrEmpty(request.Secret))
-                    request.Secret = Secret;
+                if (targetFallbackData is { })
+                {
+                    SetProperty(nameof(CommonEndpointRequestData.PublicKey), targetFallbackData.PublicKey);
+                    SetProperty(nameof(CommonEndpointRequestData.AccessToken), targetFallbackData.AccessToken);
+                    SetProperty(nameof(CommonEndpointRequestData.PublicToken), targetFallbackData.PublicToken);
+                    SetProperty(nameof(CommonEndpointRequestData.Client), targetFallbackData.Client);
+                    SetProperty(nameof(CommonEndpointRequestData.Secret), targetFallbackData.Secret);
+                }
 
-                if (String.IsNullOrEmpty(request.Client))
-                    request.Client = Identifier;
+                return request;
 
-                if (String.IsNullOrEmpty(request.AccessToken))
-                    request.AccessToken = AccessToken;
+                void SetProperty(string name, object value)
+                {
+                    try
+                    {
+                        if (value is { } && typeof(TRequest).GetTypeInfo().GetRuntimeProperties().FirstOrDefault(property => property.Name.Equals(name)) is { } target && target.CanWrite && target.CanRead && target.GetValue(request) is null)
+                        {
+                            target.SetValue(request, value);
+                        }
+                    }
+                    catch { }
+                }
             }
         }
 
-        public void Dispose() => Client.Dispose();
+        public bool UseDefaultClient
+        {
+            set
+            {
+                if (value && Client != DefaultClient)
+                {
+                    Client = DefaultClient;
+                }
+                else if (!value && Client == DefaultClient)
+                {
+                    Client = new HttpClient { };
+                }
+            }
+        }
+
+        public bool IgnoreDefaultFallbackData { get; set; }
+
+        public bool ThrowOnFailure { get; set; } = true;
+
+        public Environment Environment { get; set; } = Environment.Development;
+
+        HttpClient Client { get; set; } = DefaultClient ?? (DefaultClient ??= new HttpClient { });
+
+        static HttpClient DefaultClient { get; set; }
+
+        static Utf8JsonContent GetJsonContent(byte[] json) => new Utf8JsonContent(json);
+
+        public void Dispose()
+        {
+            if (Client != DefaultClient)
+            {
+                Client.Dispose();
+            }
+        }
+
+        public static void DisposeClient() => DefaultClient = null;
+
+        public CommonEndpointRequestData RequestFallbackData { get; set; }
+
+        public static CommonEndpointRequestData DefaultRequestFallbackData { get; set; }
+    }
+
+    /// <summary>
+    /// A class to store values of datapoints common to many Plaid endpoint requests.
+    /// </summary>
+    public sealed class CommonEndpointRequestData
+    {
+        /// <summary>
+        /// The client identifier.
+        /// </summary>
+        [JsonPropertyName("client_id")]
+        public string Client { get; set; }
+
+        /// <summary>
+        /// The secret for the target <see cref="Environment"/>.
+        /// </summary>
+        public string Secret { get; set; }
+
+        /// <summary>
+        /// The target <see cref="Entity.Item"/> access token.
+        /// </summary>
+        public string AccessToken { get; set; }
+
+        /// <summary>
+        /// The key needed to authorize endpoint access.
+        /// </summary>
+        public string PublicKey { get; set; }
+
+        /// <summary>
+        /// The target <see cref="Entity.Item"/> public token.
+        /// </summary>
+        public object PublicToken { get; set; }
     }
 
     public sealed class Utf8JsonContent : ByteArrayContent
