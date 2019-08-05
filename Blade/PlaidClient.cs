@@ -348,7 +348,7 @@ namespace Blade
         /// <summary>
         /// The target <see cref="Entity.Item"/> public token.
         /// </summary>
-        public object PublicToken { get; set; }
+        public string PublicToken { get; set; }
     }
 
     public sealed class Utf8JsonContent : ByteArrayContent
