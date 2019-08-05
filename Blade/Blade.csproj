@@ -8,13 +8,13 @@
     <Authors>YeetLabs, TheFanatr</Authors>
     <Description>An SDK for interacting with the Plaid web APIs.</Description>
     <Company>Yeet Labs</Company>
-    <Version>0.1.0-prerelease-1</Version>
+    <Version>0.1.0-prerelease-2</Version>
     <Copyright>Blade Project</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Cash-Badge/Blade</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Cash-Badge/Blade</RepositoryUrl>
     <PackageTags>Plaid SDK API Blade C# OSS</PackageTags>
-    <PackageReleaseNotes>This is the initial prerelease of the SDK; there may be numerous unresolved issues.</PackageReleaseNotes>
+    <PackageReleaseNotes>This is one of the initial prereleases of the SDK; there may be numerous unresolved issues.</PackageReleaseNotes>
     <NeutralLanguage>en-CA</NeutralLanguage>
     <PackageId>YeetLabs.Blade</PackageId>
   </PropertyGroup>
