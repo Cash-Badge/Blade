@@ -8,7 +8,7 @@
     <Authors>YeetLabs, TheFanatr</Authors>
     <Description>An SDK for interacting with the Plaid web APIs.</Description>
     <Company>Yeet Labs</Company>
-    <Version>0.1.0-prerelease-4</Version>
+    <Version>0.1.0-prerelease-5</Version>
     <Copyright>Blade Project</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Cash-Badge/Blade</PackageProjectUrl>
@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="4.6.0-preview9.19421.4" />
+    <PackageReference Include="System.Text.Json" Version="4.6.0-rc1.19456.4" />
   </ItemGroup>
 
   <ItemGroup>
