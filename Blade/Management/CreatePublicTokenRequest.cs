@@ -8,7 +8,6 @@ namespace Blade.Management
     /// <summary>
     /// Represents a request to plaid's '/item/public_token/create' endpoint, which allows for the generation of an <see cref="Management"/> access_token via <see cref="PlaidClient.ExchangeTokenAsync(ExchangeTokenRequest)"/>.
     /// </summary>
-    /// <remarks>This request can only be used in the <see cref="Environment.Sandbox"/> environment.</remarks>
     public class CreatePublicTokenRequest
     {
         /// <summary>
