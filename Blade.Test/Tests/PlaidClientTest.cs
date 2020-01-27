@@ -26,7 +26,7 @@ namespace Blade.Test
             if (PlaidClient.DefaultRequestFallbackData.AccessToken is null || PlaidClient.DefaultRequestFallbackData.PublicToken is null)
             {
                 using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
-                CreateSandboxedPublicTokenResponse response = await client.CreateSandboxedPublicToken(new CreateSandboxedPublicTokenRequest { Institution = "ins_14", InitialProducts = new[] { "assets", "auth", /*"balance",*/ "transactions", "income", "identity" } });
+                CreateSandboxedPublicTokenResponse response = await client.CreateSandboxedPublicTokenAsync(new CreateSandboxedPublicTokenRequest { Institution = "ins_14", InitialProducts = new[] { "assets", "auth", /*"balance",*/ "transactions", "income", "identity" } });
                 PlaidClient.DefaultRequestFallbackData.PublicToken = response.PublicToken;
                 PlaidClient.DefaultRequestFallbackData.AccessToken = (await client.ExchangeTokenAsync(new ExchangeTokenRequest { })).AccessToken;
                 await Helper.PersistCommonEndpointRequestDataAsync();
@@ -65,6 +65,23 @@ namespace Blade.Test
             // Assert
             result.Exception.ShouldBeNull();
             result.SuccessfulOutcome.ShouldBeTrue();
+            result.AccessToken.ShouldNotBeNull();
+        }
+
+        [TestMethod]
+        public async Task CreatePublicTokenAsync_should_retrieve_a_response_from_the_api_server()
+        {
+            // Arrange
+            using PlaidClient client = new PlaidClient { Environment = Environment.Sandbox };
+
+            // Act
+            CreatePublicTokenRequest request = new CreatePublicTokenRequest { };
+            CreatePublicTokenResponse result = await client.CreatePublicTokenAsync(request);
+
+            // Assert
+            result.Exception.ShouldBeNull();
+            result.SuccessfulOutcome.ShouldBeTrue();
+            result.PublicToken.ShouldNotBeNull();
         }
 
         [TestMethod]

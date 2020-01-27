@@ -117,6 +117,13 @@ namespace Blade
         public Task<ExchangeTokenResponse> ExchangeTokenAsync(ExchangeTokenRequest request) => PostAsync<ExchangeTokenRequest, ExchangeTokenResponse>("item/public_token/exchange", request);
 
         /// <summary>
+        /// Can be used to create a public_token from an access_token, in order to securely reference an item publically.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>A <see cref="Task{CreatePublicTokenResponse}"/> which represents the response to this request from the Plaid servers.</returns>
+        public Task<CreatePublicTokenResponse> CreatePublicTokenAsync(CreatePublicTokenRequest request) => PostAsync<CreatePublicTokenRequest, CreatePublicTokenResponse>("item/public_token/create", request);
+
+        /// <summary>
         /// Rotates the access_token associated with an <see cref="Entity.Item"/>. The endpoint returns a new access_token and immediately invalidates the previous access_token.
         /// </summary>
         /// <param name="request">The request.</param>
@@ -198,7 +205,7 @@ namespace Blade
         /// </summary>
         /// <param name="request">The request data needed for the '/sandbox/public_token/create' endpoint.</param>
         /// <returns>A <see cref="Task{CreateSandboxedPublicTokenResponse}"/> which represents the response to this request from the Plaid servers.</returns>
-        public Task<CreateSandboxedPublicTokenResponse> CreateSandboxedPublicToken(CreateSandboxedPublicTokenRequest request) => PostAsync<CreateSandboxedPublicTokenRequest, CreateSandboxedPublicTokenResponse>("sandbox/public_token/create", request);
+        public Task<CreateSandboxedPublicTokenResponse> CreateSandboxedPublicTokenAsync(CreateSandboxedPublicTokenRequest request) => PostAsync<CreateSandboxedPublicTokenRequest, CreateSandboxedPublicTokenResponse>("sandbox/public_token/create", request);
 
         internal string GetEndpoint(string path) => new UriBuilder
         {
