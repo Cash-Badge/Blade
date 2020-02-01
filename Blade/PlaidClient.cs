@@ -1,4 +1,5 @@
-﻿using Blade.Authentication;
+﻿using Blade.Assets;
+using Blade.Authentication;
 using Blade.Balance;
 using Blade.Category;
 using Blade.Identity;
@@ -157,6 +158,55 @@ namespace Blade
         /// <param name="request">The request.</param>
         /// <returns>Task&lt;Income.GetIncomeResponse&gt;.</returns>
         public Task<GetIncomeResponse> FetchUserIncomeAsync(GetIncomeRequest request) => PostAsync<GetIncomeRequest, GetIncomeResponse>("income/get", request);
+
+        /// <summary>
+        /// Generates an audit copy of a given asset report.
+        /// </summary>
+        /// <param name="request">The request data.</param>
+        /// <returns>The response data.</returns>
+        public Task<CreateAssetReportAuditCopyResponse> GenerateAssetReportAuditCopyAsync(CreateAssetReportAuditCopyRequest request) => PostAsync<CreateAssetReportAuditCopyRequest, CreateAssetReportAuditCopyResponse>("/asset_report/audit_copy/create", request);
+
+        /// <summary>
+        /// Generates an asset report for a given set of items.
+        /// </summary>
+        /// <param name="request">The request data.</param>
+        /// <returns>The response data.</returns>
+        public Task<CreateAssetReportResponse> GenerateAssetReportAsync(CreateAssetReportRequest request) => PostAsync<CreateAssetReportRequest, CreateAssetReportResponse>("/asset_report/create", request);
+
+        /// <summary>
+        /// Generates a filtered copy of a given asset report.
+        /// </summary>
+        /// <param name="request">The request data.</param>
+        /// <returns>The response data.</returns>
+        public Task<FilterAssetReportResponse> GenerateFilteredAssetReportAsync(FilterAssetReportRequest request) => PostAsync<FilterAssetReportRequest, FilterAssetReportResponse>("/asset_report/filter", request);
+
+        /// <summary>
+        /// Gets a generated asset report for a given set of items.
+        /// </summary>
+        /// <param name="request">The request data.</param>
+        /// <returns>The response data.</returns>
+        public Task<GetAssetReportResponse> FetchAssetReportAsync(GetAssetReportRequest request) => PostAsync<GetAssetReportRequest, GetAssetReportResponse>("/asset_report/get", request);
+
+        /// <summary>
+        /// Generates a new version of a given existing asset report, using the newest available data.
+        /// </summary>
+        /// <param name="request">The request data.</param>
+        /// <returns>The response data.</returns>
+        public Task<RefreshAssetReportResponse> RefreshAssetReportAsync(RefreshAssetReportRequest request) => PostAsync<RefreshAssetReportRequest, RefreshAssetReportResponse>("/asset_report/refresh", request);
+
+        /// <summary>
+        /// Remove a generated audit copy of an asset report from Plaid's system.
+        /// </summary>
+        /// <param name="request">The request data.</param>
+        /// <returns>The response data.</returns>
+        public Task<RemoveAssetReportAuditCopyResponse> RemoveAssetReportAuditCopyAsync(RemoveAssetReportAuditCopyRequest request) => PostAsync<RemoveAssetReportAuditCopyRequest, RemoveAssetReportAuditCopyResponse>("/asset_report/audit_copy/remove", request);
+
+        /// <summary>
+        /// Remove a generated asset report from Plaid's system.
+        /// </summary>
+        /// <param name="request">The request data.</param>
+        /// <returns>The response data.</returns>
+        public Task<RemoveAssetReportResponse> RemoveAssetReportAsync(RemoveAssetReportRequest request) => PostAsync<RemoveAssetReportRequest, RemoveAssetReportResponse>("/asset_report/remove", request); 
 
         /// <summary>
         /// Retrieves the bank account and routing numbers associated with an <see cref="Entity.Item"/>’s checking and savings accounts, along with high-level account data and balances.

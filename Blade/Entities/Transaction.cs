@@ -120,13 +120,39 @@ namespace Blade.Entity
         /// Gets the transaction type.
         /// </summary>
         /// <value>The transaction type.</value>
-        public TransactionType Type
+        public Kind Type
         {
             get
             {
-                bool valid = Enum.TryParse(TransactionType, out TransactionType type);
-                return valid ? type : Entity.TransactionType.Unresolved;
+                bool valid = Enum.TryParse(TransactionType, out Kind type);
+                return valid ? type : Kind.Unresolved;
             }
+        }
+
+        /// <summary>
+        /// A type of transaction.
+        /// </summary>
+        public enum Kind
+        {
+            /// <summary>
+            /// Place
+            /// </summary>
+            Place,
+
+            /// <summary>
+            /// Digital
+            /// </summary>
+            Digital,
+
+            /// <summary>
+            /// Special
+            /// </summary>
+            Special,
+
+            /// <summary>
+            /// Unresolved
+            /// </summary>
+            Unresolved
         }
 
         /// <summary>

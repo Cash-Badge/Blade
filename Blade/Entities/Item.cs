@@ -27,7 +27,7 @@ namespace Blade.Entity
         public string[] BilledProducts { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Entity.Institution"/> identifier.
+        /// Gets or sets the <see cref="Report.Institution"/> identifier.
         /// </summary>
         /// <value>The institution identifier.</value>
         [JsonPropertyName("institution_id")]

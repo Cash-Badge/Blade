@@ -16,7 +16,7 @@ namespace Blade.Entity
         public string Identifier { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Entity.Item"/> identifier.
+        /// Gets or sets the <see cref="Report.Item"/> identifier.
         /// </summary>
         /// <value>The item identifier.</value>
         [JsonPropertyName("item_id")]
