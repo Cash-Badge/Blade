@@ -6,7 +6,7 @@ namespace Blade.Entity
     public class History
     {
         [JsonPropertyName("current")]
-        public string Value { get; set; }
+        public double Value { get; set; }
 
         public DateTime Date { get; set; }
 

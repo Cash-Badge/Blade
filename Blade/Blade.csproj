@@ -8,7 +8,7 @@
     <Authors>YeetLabs, TheFanatr</Authors>
     <Description>Blade is an SDK for interacting with the Plaid web APIs.</Description>
     <Company>Yeet Labs</Company>
-    <Version>0.1.0-prerelease-8</Version>
+    <Version>0.1.0-prerelease-9</Version>
     <Copyright>Yeet Labs</Copyright>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/Cash-Badge/Blade</PackageProjectUrl>
