@@ -73,7 +73,7 @@ namespace Blade.Entity
             [JsonPropertyName("account_id")]
             public string Account { get; set; }
 
-            public int Amount { get; set; }
+            public double Amount { get; set; }
 
             public DateTime Date { get; set; }
 
